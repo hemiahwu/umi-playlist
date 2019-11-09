@@ -5,7 +5,11 @@ import './index.scss';
 
 const { Content } = Layout;
 
-function BasicLayout({ children }) {
+function BasicLayout({ children, location }) {
+  // 全局布局 登录页面
+  if (location.pathname === '/login') {
+    return children;
+  }
   return (
     <Layout className="basic-layout">
       <Header />
