@@ -4,21 +4,31 @@
       width: 100%;
       height: 50px;
       background: black;
-    }
+      position: relative;
 
-    .logo {
-      height: 36px;
-      margin: 6px 15px;
-    }
-    .menus {
-      width: calc(100% - 150px);
-      height: 100%;
-      display: inline-block;
-      vertical-align: top;
-
-      .ant-menu-item {
+      .logo {
+        height: 36px;
+        margin: 6px 15px;
+      }
+      .menus {
+        width: calc(100% - 150px);
         height: 100%;
-        line-height: 50px;
+        display: inline-block;
+        vertical-align: top;
+
+        .ant-menu-item {
+          height: 100%;
+          line-height: 50px;
+        }
+      }
+      .right {
+        position: absolute;
+        right: 10px;
+        top: 25%;
+
+        a {
+          color: #fff;
+        }
       }
     }
   }
