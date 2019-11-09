@@ -9,7 +9,7 @@ function BasicLayout({ children }) {
   return (
     <Layout className="basic-layout">
       <Header />
-      <Content>{children}</Content>
+      <Content className="content">{children}</Content>
       <Footer />
     </Layout>
   );

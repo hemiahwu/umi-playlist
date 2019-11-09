@@ -31,5 +31,17 @@
         }
       }
     }
+
+    .content {
+      height: calc(100vh - 120px);
+      overflow: auto;
+      display: flex;
+      flex-flow: inherit;
+    }
+
+    .footer {
+      text-align: center;
+      color: #bbb;
+    }
   }
 }
