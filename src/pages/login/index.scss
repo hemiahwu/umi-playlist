@@ -1,6 +1,27 @@
 .content {
   height: calc(100vh - 69px);
   overflow: hidden;
+  display: flex;
+
+  .form {
+    width: 350px;
+    margin: auto;
+    padding: 50px 30px;
+    min-width: 300px;
+
+    h1 {
+      text-align: center;
+      line-height: 16px;
+      font-size: 20px;
+      margin-bottom: 20px;
+
+      img {
+        vertical-align: bottom;
+        height: 60px;
+        margin-right: 10px;
+      }
+    }
+  }
 }
 
 .footer {
