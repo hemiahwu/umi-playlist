@@ -8,7 +8,7 @@ import styles from './index.scss';
 const { Content, Footer } = Layout;
 const iconStyle = { color: 'rgba(0,0,0,.25)' };
 
-export default function index() {
+const index = ({ form }) => {
   return (
     <Layout>
       <Content className={styles.content}>
@@ -20,19 +20,37 @@ export default function index() {
           {/* Form表单 */}
           <Form>
             <Form.Item>
-              <Input
-                prefix={<Icon type="user" style={iconStyle} />}
-                placeholder="请输入用户名"
-                autoFocus
-              />
+              {form.getFieldDecorator('username', {
+                rules: [
+                  {
+                    required: true,
+                    message: '用户名不能为空',
+                  },
+                ],
+              })(
+                <Input
+                  prefix={<Icon type="user" style={iconStyle} />}
+                  placeholder="请输入用户名"
+                  autoFocus
+                />,
+              )}
             </Form.Item>
             <Form.Item>
-              <Input
-                type="password"
-                prefix={<Icon type="lock" style={iconStyle} />}
-                placeholder="请输入密码"
-                autoFocus
-              />
+              {form.getFieldDecorator('password', {
+                rules: [
+                  {
+                    required: true,
+                    message: '密码不能为空',
+                  },
+                ],
+              })(
+                <Input
+                  type="password"
+                  prefix={<Icon type="lock" style={iconStyle} />}
+                  placeholder="请输入密码"
+                  autoFocus
+                />,
+              )}
             </Form.Item>
             <Form.Item>
               <Button type="primary" style={{ width: '100%' }}>
@@ -47,4 +65,6 @@ export default function index() {
       </Footer>
     </Layout>
   );
-}
+};
+
+export default Form.create()(index);
