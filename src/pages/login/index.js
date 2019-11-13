@@ -2,6 +2,7 @@
  * title: 登录
  */
 import React from 'react';
+import { login } from './services/login';
 import { Layout, Icon, Form, Input, Button } from 'antd';
 import styles from './index.scss';
 
@@ -9,6 +10,14 @@ const { Content, Footer } = Layout;
 const iconStyle = { color: 'rgba(0,0,0,.25)' };
 
 const index = ({ form }) => {
+  const handleSubmit = () => {
+    // form校验
+    form.validateFields((err, values) => {
+      if (!err) {
+        login(values).then(data => console.log(data));
+      }
+    });
+  };
   return (
     <Layout>
       <Content className={styles.content}>
@@ -53,7 +62,7 @@ const index = ({ form }) => {
               )}
             </Form.Item>
             <Form.Item>
-              <Button type="primary" style={{ width: '100%' }}>
+              <Button onClick={handleSubmit} type="primary" style={{ width: '100%' }}>
                 登录
               </Button>
             </Form.Item>
