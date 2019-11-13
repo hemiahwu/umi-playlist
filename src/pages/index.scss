@@ -1,0 +1,32 @@
+.home {
+  margin: 15px 15px 0 !important;
+  .card {
+    margin-bottom: 15px;
+  }
+  .number {
+    text-align: center;
+    height: 220px;
+    .title {
+      font-size: 16px;
+    }
+    .text {
+      font-size: 64px;
+      font-weight: bold;
+      color: orange;
+      margin-bottom: 10px;
+      a {
+        color: orange;
+      }
+      &.gray {
+        color: #888;
+      }
+    }
+  }
+  .images {
+    width: 100%;
+    height: 220px;
+    background: url(@/assets/home.jpeg) no-repeat;
+    background-position: center;
+    background-size: cover;
+  }
+}

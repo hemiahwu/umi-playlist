@@ -1,17 +1,28 @@
-import styles from './index.css';
+import { Card, Col, Row } from 'antd';
+import styles from './index.scss';
 
-export default function() {
+function indexPage() {
   return (
-    <div className={styles.normal}>
-      <div className={styles.welcome} />
-      <ul className={styles.list}>
-        <li>To get started, edit <code>src/pages/index.js</code> and save to reload.</li>
-        <li>
-          <a href="https://umijs.org/guide/getting-started.html">
-            Getting Started
-          </a>
-        </li>
-      </ul>
+    <div className={styles.home}>
+      <Row gutter={16}>
+        <Col span={4}>
+          <Card className={`${styles.card} ${styles.number}`}>
+            <p className={styles.title}>待我审批</p>
+            <p className={styles.text}>2</p>
+          </Card>
+        </Col>
+        <Col span={4}>
+          <Card className={`${styles.card} ${styles.number}`}>
+            <p className={styles.title}>本周登录次数</p>
+            <p className={`${styles.text} ${styles.gray}`}>5</p>
+          </Card>
+        </Col>
+        <Col span={16}>
+          <div className={`${styles.images} ${styles.card}`}></div>
+        </Col>
+      </Row>
     </div>
   );
 }
+
+export default indexPage;
