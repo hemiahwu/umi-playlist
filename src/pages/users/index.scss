@@ -1,0 +1,12 @@
+.content-wrapper {
+  height: calc(100% - 15px);
+  overflow: auto;
+  margin: 15px 15px 0;
+  background: #fff;
+  padding: 15px;
+  flex: 1 1;
+}
+
+.tool-wrapper {
+  margin-bottom: 15px;
+}

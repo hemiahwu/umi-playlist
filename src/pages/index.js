@@ -1,3 +1,6 @@
+/**
+ * title: 首页
+ */
 import ReactEcharts from 'echarts-for-react';
 import { Card, Col, Row } from 'antd';
 import styles from './index.scss';
