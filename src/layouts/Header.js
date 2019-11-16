@@ -21,6 +21,9 @@ const index = ({ location }) => {
           <MenuItem key="/">
             <Link to="/">首页</Link>
           </MenuItem>
+          <MenuItem key="/users">
+            <Link to="/users">用户</Link>
+          </MenuItem>
         </Menu>
         <div className="right">
           <Dropdown overlay={menu}>

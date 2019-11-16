@@ -2,9 +2,12 @@
  * title: 用户
  */
 import React from 'react';
-import { Button, Table } from 'antd';
-import styles from './index.scss';
+import { Button } from 'antd';
+import { Content, Tool } from '@/components/Layout';
+import Table from '@/components/Table';
+import { fetch } from './services/users';
 const index = () => {
+  fetch().then(res => console.log(res));
   const columns = [
     {
       title: '用户名',
@@ -36,12 +39,12 @@ const index = () => {
     },
   ];
   return (
-    <div className={`${styles['content-wrapper']}`}>
-      <div className={`${styles['tool-wrapper']}`}>
+    <Content>
+      <Tool>
         <Button type="primary">添加用户</Button>
-      </div>
+      </Tool>
       <Table columns={columns} />
-    </div>
+    </Content>
   );
 };
 
