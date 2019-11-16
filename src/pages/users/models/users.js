@@ -9,14 +9,24 @@ export default {
     pageSize: 5,
   },
   reducers: {
-    setData(state) {
-      return { ...state };
+    setData(state, { payload: { list, total, page } }) {
+      return { ...state, list, total, page };
     },
   },
   effects: {
-    *fetch({}, { call, put }) {
-      yield call(usersServices.fetch, { page: 1, pageSize: 5 });
-      // yield put({ type: 'setData' });
+    *fetch({ payload: { page } }, { call, put, select }) {
+      // console.log(page);
+      const pageSize = yield select(state => state.users.pageSize);
+      const res = yield call(usersServices.fetch, { page, pageSize });
+      // console.log(res);
+      if (res && res.state == 'success') {
+        yield put({ type: 'setData', payload: { ...res.data, page } });
+      } else {
+        yield put({
+          type: 'setData',
+          payload: { data: { list: [], total: 0 } },
+        });
+      }
     },
   },
   subscriptions: {
@@ -24,7 +34,7 @@ export default {
       // 首先要判断当前的路径
       return history.listen(({ pathname }) => {
         if (pathname == '/users') {
-          dispatch({ type: 'fetch' });
+          dispatch({ type: 'fetch', payload: { page: 1 } });
         }
       });
     },
