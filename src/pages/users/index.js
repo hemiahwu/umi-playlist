@@ -43,8 +43,9 @@ const index = ({ list }) => {
   return (
     <Content>
       <Tool>
-        <Button type="primary">添加用户</Button>
-        <UserModal></UserModal>
+        <UserModal>
+          <Button type="primary">添加用户</Button>
+        </UserModal>
       </Tool>
       <Table columns={columns} dataSource={list} rowKey={(list, index) => list.id} />
     </Content>
