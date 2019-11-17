@@ -26,10 +26,20 @@ class UserModal extends Component {
       visible: false,
     });
   };
+  handleOk = () => {
+    // form校验
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        // 关闭弹窗
+        this.handleCancel();
+        // 请求
+      }
+    });
+  };
   render() {
     const { visible } = this.state;
     const { children } = this.props;
-
+    const { getFieldDecorator } = this.props.form;
     return (
       <>
         {withClick(children, this.handleOpenClick)}
@@ -39,19 +49,43 @@ class UserModal extends Component {
           centered={true}
           maskClosable={false}
           onCancel={this.handleCancel}
+          onOk={this.handleOk}
         >
           <Form>
             <FormItem label="用户名" {...formItemLayout}>
-              <Input placeholder="请输入用户名" />
+              {getFieldDecorator('username', {
+                rules: [
+                  {
+                    required: true,
+                    message: '用户名不能为空',
+                  },
+                ],
+              })(<Input placeholder="请输入用户名" />)}
             </FormItem>
             <FormItem label="姓名" {...formItemLayout}>
-              <Input placeholder="请输入姓名" />
+              {getFieldDecorator('nickname', {
+                rules: [
+                  {
+                    required: true,
+                    message: '昵称不能为空',
+                  },
+                ],
+              })(<Input placeholder="请输入姓名" />)}
             </FormItem>
             <FormItem label="用户类型" {...formItemLayout}>
-              <RadioGroup>
-                <Radio value={'0'}>管理员</Radio>
-                <Radio value={'1'}>普通用户</Radio>
-              </RadioGroup>
+              {getFieldDecorator('type', {
+                rules: [
+                  {
+                    required: true,
+                    message: '用户类型不能为空,请选择',
+                  },
+                ],
+              })(
+                <RadioGroup>
+                  <Radio value={'0'}>管理员</Radio>
+                  <Radio value={'1'}>普通用户</Radio>
+                </RadioGroup>,
+              )}
             </FormItem>
           </Form>
         </Modal>
@@ -59,4 +93,4 @@ class UserModal extends Component {
     );
   }
 }
-export default UserModal;
+export default Form.create()(UserModal);
