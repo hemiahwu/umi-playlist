@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Form, Input, Radio } from 'antd';
+import { withClick } from '@/utils/hoc';
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -8,11 +9,6 @@ const RadioGroup = Radio.Group;
 const formItemLayout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 14 },
-};
-
-// 克隆子元素button 并添加事件方法 HOC: higher order components
-const withClick = (element, handleClick = () => {}) => {
-  return <element.type {...element.props} onClick={handleClick} />;
 };
 
 class UserModal extends Component {
@@ -25,14 +21,25 @@ class UserModal extends Component {
       visible: true,
     });
   };
+  handleCancel = () => {
+    this.setState({
+      visible: false,
+    });
+  };
   render() {
     const { visible } = this.state;
     const { children } = this.props;
 
     return (
-      <div>
+      <>
         {withClick(children, this.handleOpenClick)}
-        <Modal title="添加用户" visible={visible} centered={true} maskClosable={false}>
+        <Modal
+          title="添加用户"
+          visible={visible}
+          centered={true}
+          maskClosable={false}
+          onCancel={this.handleCancel}
+        >
           <Form>
             <FormItem label="用户名" {...formItemLayout}>
               <Input placeholder="请输入用户名" />
@@ -48,7 +55,7 @@ class UserModal extends Component {
             </FormItem>
           </Form>
         </Modal>
-      </div>
+      </>
     );
   }
 }
