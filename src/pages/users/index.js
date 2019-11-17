@@ -7,7 +7,7 @@ import { Content, Tool } from '@/components/Layout';
 import Table from '@/components/Table';
 import { connect } from 'dva';
 
-const index = () => {
+const index = ({ list }) => {
   const columns = [
     {
       title: '用户名',
@@ -26,6 +26,7 @@ const index = () => {
       dataIndex: 'type',
       key: 'type',
       width: '25%',
+      render: text => <span>{text === '0' ? '管理员' : '普通用户'}</span>,
     },
     {
       title: '操作',
@@ -43,7 +44,7 @@ const index = () => {
       <Tool>
         <Button type="primary">添加用户</Button>
       </Tool>
-      <Table columns={columns} />
+      <Table columns={columns} dataSource={list} rowKey={(list, index) => list.id} />
     </Content>
   );
 };
