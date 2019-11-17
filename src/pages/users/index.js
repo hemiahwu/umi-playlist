@@ -6,6 +6,7 @@ import { Button } from 'antd';
 import { Content, Tool } from '@/components/Layout';
 import Table from '@/components/Table';
 import { connect } from 'dva';
+import UserModal from './components/UserModal';
 
 const index = ({ list }) => {
   const columns = [
@@ -43,6 +44,7 @@ const index = ({ list }) => {
     <Content>
       <Tool>
         <Button type="primary">添加用户</Button>
+        <UserModal></UserModal>
       </Tool>
       <Table columns={columns} dataSource={list} rowKey={(list, index) => list.id} />
     </Content>
