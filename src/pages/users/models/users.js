@@ -28,6 +28,9 @@ export default {
         });
       }
     },
+    *add({ payload }, { call }) {
+      return yield call(usersServices.add, payload);
+    },
   },
   subscriptions: {
     setup({ dispatch, history }) {

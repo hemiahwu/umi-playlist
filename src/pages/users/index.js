@@ -2,13 +2,13 @@
  * title: 用户
  */
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Message } from 'antd';
 import { Content, Tool } from '@/components/Layout';
 import Table from '@/components/Table';
 import { connect } from 'dva';
 import UserModal from './components/UserModal';
 
-const index = ({ list }) => {
+const index = ({ list, dispatch }) => {
   const columns = [
     {
       title: '用户名',
@@ -40,10 +40,20 @@ const index = ({ list }) => {
       ),
     },
   ];
+
+  const handleAdd = values => {
+    dispatch({ type: 'users/add', payload: values }).then(res => {
+      if (res && res.state == 'success') {
+        Message.success(res.msg);
+      } else {
+        Message.error('添加用户失败');
+      }
+    });
+  };
   return (
     <Content>
       <Tool>
-        <UserModal>
+        <UserModal onAdd={handleAdd}>
           <Button type="primary">添加用户</Button>
         </UserModal>
       </Tool>

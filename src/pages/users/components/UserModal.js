@@ -33,6 +33,7 @@ class UserModal extends Component {
         // 关闭弹窗
         this.handleCancel();
         // 请求
+        this.props.onAdd(values);
       }
     });
   };
