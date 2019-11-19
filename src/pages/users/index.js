@@ -8,7 +8,7 @@ import Table from '@/components/Table';
 import { connect } from 'dva';
 import UserModal from './components/UserModal';
 
-const index = ({ list, dispatch }) => {
+const index = ({ list, dispatch, loading, addLoading }) => {
   const columns = [
     {
       title: '用户名',
@@ -41,10 +41,19 @@ const index = ({ list, dispatch }) => {
     },
   ];
 
+  const reload = () => {
+    dispatch({
+      type: 'users/fetch',
+      payload: { page: 1 },
+    });
+  };
+
   const handleAdd = values => {
-    dispatch({ type: 'users/add', payload: values }).then(res => {
+    return dispatch({ type: 'users/add', payload: values }).then(res => {
       if (res && res.state == 'success') {
         Message.success(res.msg);
+        reload();
+        return res;
       } else {
         Message.error('添加用户失败');
       }
@@ -53,13 +62,22 @@ const index = ({ list, dispatch }) => {
   return (
     <Content>
       <Tool>
-        <UserModal onAdd={handleAdd}>
+        <UserModal onAdd={handleAdd} addLoading={addLoading}>
           <Button type="primary">添加用户</Button>
         </UserModal>
       </Tool>
-      <Table columns={columns} dataSource={list} rowKey={(list, index) => list.id} />
+      <Table
+        columns={columns}
+        dataSource={list}
+        rowKey={(list, index) => list.id}
+        loading={loading}
+      />
     </Content>
   );
 };
 
-export default connect(({ users }) => ({ ...users }))(index);
+export default connect(({ users, loading }) => ({
+  ...users,
+  loading: loading.effects['users/fetch'],
+  addLoading: loading.effects['users/add'],
+}))(index);

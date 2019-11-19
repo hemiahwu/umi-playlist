@@ -30,16 +30,19 @@ class UserModal extends Component {
     // form校验
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        // 关闭弹窗
-        this.handleCancel();
         // 请求
-        this.props.onAdd(values);
+        this.props.onAdd(values).then(res => {
+          if (res.state == 'success') {
+            // 关闭弹窗
+            this.handleCancel();
+          }
+        });
       }
     });
   };
   render() {
     const { visible } = this.state;
-    const { children } = this.props;
+    const { children, addLoading } = this.props;
     const { getFieldDecorator } = this.props.form;
     return (
       <>
@@ -51,6 +54,7 @@ class UserModal extends Component {
           maskClosable={false}
           onCancel={this.handleCancel}
           onOk={this.handleOk}
+          confirmLoading={addLoading}
         >
           <Form>
             <FormItem label="用户名" {...formItemLayout}>
