@@ -44,6 +44,7 @@ class UserModal extends Component {
     const { visible } = this.state;
     const { children, addLoading } = this.props;
     const { getFieldDecorator } = this.props.form;
+
     return (
       <>
         {withClick(children, this.handleOpenClick)}
@@ -85,6 +86,7 @@ class UserModal extends Component {
                     message: '用户类型不能为空,请选择',
                   },
                 ],
+                initialValue: '1',
               })(
                 <RadioGroup>
                   <Radio value={'0'}>管理员</Radio>
