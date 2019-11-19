@@ -8,7 +8,7 @@ import Table from '@/components/Table';
 import { connect } from 'dva';
 import UserModal from './components/UserModal';
 
-const index = ({ list, dispatch, loading, addLoading }) => {
+const index = ({ list, dispatch, loading, addLoading, total, page, pageSize }) => {
   const columns = [
     {
       title: '用户名',
@@ -59,6 +59,16 @@ const index = ({ list, dispatch, loading, addLoading }) => {
       }
     });
   };
+
+  // 分页
+  const handlePageChange = pageNum => {
+    // console.log(pageNum);
+    if (page !== pageNum) {
+      // 发起请求
+      dispatch({ type: 'users/fetch', payload: { page: pageNum } });
+    }
+  };
+
   return (
     <Content>
       <Tool>
@@ -71,6 +81,12 @@ const index = ({ list, dispatch, loading, addLoading }) => {
         dataSource={list}
         rowKey={(list, index) => list.id}
         loading={loading}
+        pagination={{
+          total: total,
+          pageSize: pageSize,
+          current: page,
+          onChange: handlePageChange,
+        }}
       />
     </Content>
   );
