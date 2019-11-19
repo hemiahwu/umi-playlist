@@ -34,8 +34,10 @@ const index = ({ list, dispatch, loading, addLoading, total, page, pageSize }) =
       key: 'operation',
       render: (text, record) => (
         <div>
-          <a>编辑</a>
-          <a>删除</a>
+          <UserModal title="编辑用户" record={record}>
+            <a>编辑</a>
+            <a>删除</a>
+          </UserModal>
         </div>
       ),
     },

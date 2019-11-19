@@ -42,13 +42,14 @@ class UserModal extends Component {
   };
   render() {
     const { visible } = this.state;
-    const { children, addLoading } = this.props;
+    const { children, addLoading, title } = this.props;
     const { getFieldDecorator } = this.props.form;
+    const { username, nickname, type } = this.props.record;
     return (
       <>
         {withClick(children, this.handleOpenClick)}
         <Modal
-          title="添加用户"
+          title={title}
           visible={visible}
           centered={true}
           maskClosable={false}
@@ -65,6 +66,7 @@ class UserModal extends Component {
                     message: '用户名不能为空',
                   },
                 ],
+                initialValue: username,
               })(<Input placeholder="请输入用户名" />)}
             </FormItem>
             <FormItem label="姓名" {...formItemLayout}>
@@ -75,6 +77,7 @@ class UserModal extends Component {
                     message: '昵称不能为空',
                   },
                 ],
+                initialValue: nickname,
               })(<Input placeholder="请输入姓名" />)}
             </FormItem>
             <FormItem label="用户类型" {...formItemLayout}>
@@ -85,6 +88,7 @@ class UserModal extends Component {
                     message: '用户类型不能为空,请选择',
                   },
                 ],
+                initialValue: type || '1',
               })(
                 <RadioGroup>
                   <Radio value={'0'}>管理员</Radio>
@@ -98,4 +102,10 @@ class UserModal extends Component {
     );
   }
 }
+
+UserModal.defaultProps = {
+  title: '添加用户',
+  record: { type: '1', username: '', nickname: '' },
+};
+
 export default Form.create()(UserModal);
