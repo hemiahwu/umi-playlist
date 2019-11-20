@@ -31,6 +31,12 @@ export default {
     *add({ payload }, { call }) {
       return yield call(usersServices.add, payload);
     },
+    *edit({ payload: { id, value } }, { call }) {
+      return yield call(usersServices.edit, id, value);
+    },
+    *remove({ payload }, { call }) {
+      return yield call(usersServices.remove, payload);
+    },
   },
   subscriptions: {
     setup({ dispatch, history }) {

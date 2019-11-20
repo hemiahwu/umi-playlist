@@ -31,7 +31,7 @@ class UserModal extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         // 请求
-        this.props.onAdd(values).then(res => {
+        this.props.onOk(values).then(res => {
           if (res.state == 'success') {
             // 关闭弹窗
             this.handleCancel();
