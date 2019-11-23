@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import { Form, Input, Select, Button } from 'antd';
 import { Content } from '@/components/Layout';
 import E from 'wangeditor';
+import { connect } from 'dva';
 
 class index extends Component {
   constructor(props) {
@@ -18,6 +19,30 @@ class index extends Component {
 
   componentDidMount() {
     this.initEditor();
+    this.getAllUsers();
+  }
+
+  getAllUsers() {
+    this.props
+      .dispatch({
+        type: 'reports/getAllUsers',
+      })
+      .then(res => {
+        this.renderUsers();
+      });
+  }
+
+  renderUsers() {
+    const { allUsersList } = this.props;
+    return (
+      <Select placeholder="请选择接收人">
+        {allUsersList.map(({ nickname }, index) => [
+          <Select.Option value={index} key={index}>
+            {nickname}
+          </Select.Option>,
+        ])}
+      </Select>
+    );
   }
 
   initEditor() {
@@ -62,7 +87,7 @@ class index extends Component {
                   message: '用户名不能为空',
                 },
               ],
-            })(<Select placeholder="请请选择接收人" />)}
+            })(this.renderUsers())}
           </Form.Item>
           <Form.Item label="内容" required>
             <div
@@ -81,4 +106,4 @@ class index extends Component {
   }
 }
 
-export default Form.create()(index);
+export default connect(({ reports }) => ({ ...reports }))(Form.create()(index));
