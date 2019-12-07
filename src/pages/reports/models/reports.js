@@ -14,7 +14,7 @@ export default {
     *getAllUsers({ _ }, { call, put }) {
       const res = yield call(reportsServices.fetchAllUsers);
       // console.log(res);
-      if (res && res.state == 'success') {
+      if (res && res.state === 'success') {
         yield put({ type: 'setData', payload: res.data });
       } else {
         yield put({
@@ -22,6 +22,9 @@ export default {
           payload: { allUsersList: [] },
         });
       }
+    },
+    *add({ payload }, { call }) {
+      return yield call(reportsServices.add, payload);
     },
   },
   subscriptions: {},

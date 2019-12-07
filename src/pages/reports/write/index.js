@@ -2,10 +2,11 @@
  * title:
  */
 import React, { Component } from 'react';
-import { Form, Input, Select, Button } from 'antd';
+import { Form, Input, Select, Button, Message } from 'antd';
 import { Content } from '@/components/Layout';
 import E from 'wangeditor';
 import { connect } from 'dva';
+import router from 'umi/router';
 
 class index extends Component {
   constructor(props) {
@@ -36,8 +37,8 @@ class index extends Component {
     const { allUsersList } = this.props;
     return (
       <Select placeholder="请选择接收人">
-        {allUsersList.map(({ nickname }, index) => [
-          <Select.Option value={index} key={index}>
+        {allUsersList.map(({ username, nickname }, index) => [
+          <Select.Option value={username} key={index}>
             {nickname}
           </Select.Option>,
         ])}
@@ -51,7 +52,7 @@ class index extends Component {
     // 监听内容
     editor.customConfig.onchange = html => {
       let editorCheck = true;
-      if (!html || html == '<p><br></p>') {
+      if (!html || html === '<p><br></p>') {
         editorCheck = false;
       }
       this.setState({
@@ -62,6 +63,38 @@ class index extends Component {
 
     editor.create();
   }
+
+  // 提交周报
+  handleOk = () => {
+    const { editorCheck, editorContent } = this.state;
+    // 表单校验
+    this.props.form.validateFields((err, value) => {
+      if (!err) {
+        // 校验编辑器
+        if (editorContent && editorCheck) {
+          // 发起请求
+          // console.log(value, editorContent);
+          this.props
+            .dispatch({
+              type: 'reports/add',
+              payload: { ...value, content: editorContent },
+            })
+            .then(res => {
+              if (res && res.state === 'success') {
+                Message.success(res.msg || '周报提交成功');
+                router.push('/reports');
+              } else {
+                Message.error(res.msg || '周报提交失败');
+              }
+            });
+        } else {
+          this.setState({
+            editorCheck: false,
+          });
+        }
+      }
+    });
+  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -80,7 +113,7 @@ class index extends Component {
             })(<Input placeholder="请输入周报标题" />)}
           </Form.Item>
           <Form.Item label="接收人">
-            {getFieldDecorator('receiverId', {
+            {getFieldDecorator('username', {
               rules: [
                 {
                   required: true,
@@ -98,7 +131,9 @@ class index extends Component {
           </Form.Item>
           <Form.Item className="action">
             <Button>取消</Button>
-            <Button type="primary">提交</Button>
+            <Button onClick={this.handleOk} type="primary">
+              提交
+            </Button>
           </Form.Item>
         </Form>
       </Content>

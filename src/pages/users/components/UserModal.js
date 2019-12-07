@@ -32,7 +32,7 @@ class UserModal extends Component {
       if (!err) {
         // 请求
         this.props.onOk(values).then(res => {
-          if (res.state == 'success') {
+          if (res.state === 'success') {
             // 关闭弹窗
             this.handleCancel();
           }

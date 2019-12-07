@@ -19,7 +19,7 @@ export default {
       const pageSize = yield select(state => state.users.pageSize);
       const res = yield call(usersServices.fetch, { page, pageSize });
       // console.log(res);
-      if (res && res.state == 'success') {
+      if (res && res.state === 'success') {
         yield put({ type: 'setData', payload: { ...res.data, page } });
       } else {
         yield put({
@@ -42,7 +42,7 @@ export default {
     setup({ dispatch, history }) {
       // 首先要判断当前的路径
       return history.listen(({ pathname }) => {
-        if (pathname == '/users') {
+        if (pathname === '/users') {
           dispatch({ type: 'fetch', payload: { page: 1 } });
         }
       });

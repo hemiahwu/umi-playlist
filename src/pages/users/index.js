@@ -54,7 +54,7 @@ const index = ({ list, dispatch, loading, addLoading, total, page, pageSize }) =
 
   const handleAdd = values => {
     return dispatch({ type: 'users/add', payload: values }).then(res => {
-      if (res && res.state == 'success') {
+      if (res && res.state === 'success') {
         Message.success(res.msg);
         reload();
         return res;
@@ -80,7 +80,7 @@ const index = ({ list, dispatch, loading, addLoading, total, page, pageSize }) =
       type: 'users/edit',
       payload: { id, value },
     }).then(res => {
-      if (res && res.state == 'success') {
+      if (res && res.state === 'success') {
         Message.success(res.msg || '编辑用户成功');
         reload();
         return res;
@@ -96,7 +96,7 @@ const index = ({ list, dispatch, loading, addLoading, total, page, pageSize }) =
       type: 'users/remove',
       payload: id,
     }).then(res => {
-      if (res && res.state == 'success') {
+      if (res && res.state === 'success') {
         Message.success(res.msg || '删除用户成功');
         reload();
       } else {
