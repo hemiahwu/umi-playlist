@@ -3,6 +3,7 @@
  */
 import React from 'react';
 import { login } from './services/login';
+import router from 'umi/router';
 import { Layout, Icon, Form, Input, Button } from 'antd';
 import styles from './index.scss';
 
@@ -14,7 +15,7 @@ const index = ({ form }) => {
     // form校验
     form.validateFields((err, values) => {
       if (!err) {
-        login(values).then(data => console.log(data));
+        login(values).then(data => router.push('/'));
       }
     });
   };
