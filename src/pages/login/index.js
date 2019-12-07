@@ -2,20 +2,36 @@
  * title: 登录
  */
 import React from 'react';
-import { login } from './services/login';
 import router from 'umi/router';
-import { Layout, Icon, Form, Input, Button } from 'antd';
+import jwt_decode from 'jwt-decode';
+import { Layout, Icon, Form, Input, Button, Message } from 'antd';
 import styles from './index.scss';
+import { connect } from 'dva';
 
 const { Content, Footer } = Layout;
 const iconStyle = { color: 'rgba(0,0,0,.25)' };
 
-const index = ({ form }) => {
+const index = ({ form, dispatch, loading }) => {
   const handleSubmit = () => {
     // form校验
     form.validateFields((err, values) => {
       if (!err) {
-        login(values).then(data => router.push('/'));
+        dispatch({
+          type: 'login/login',
+          payload: values,
+        }).then(res => {
+          if (res && res.state === 'suc') {
+            const token = jwt_decode(res.token);
+            const { id, nickname, username, type } = token;
+            localStorage.setItem('username', username);
+            localStorage.setItem('nickname', nickname);
+            localStorage.setItem('userId', id);
+            localStorage.setItem('authority', type === '0' ? 'admin' : 'user');
+            router.push('/');
+          } else {
+            Message.error(res ? res.msg : '登录失败');
+          }
+        });
       }
     });
   };
@@ -63,7 +79,12 @@ const index = ({ form }) => {
               )}
             </Form.Item>
             <Form.Item>
-              <Button onClick={handleSubmit} type="primary" style={{ width: '100%' }}>
+              <Button
+                loading={loading}
+                onClick={handleSubmit}
+                type="primary"
+                style={{ width: '100%' }}
+              >
                 登录
               </Button>
             </Form.Item>
@@ -77,4 +98,6 @@ const index = ({ form }) => {
   );
 };
 
-export default Form.create()(index);
+export default connect(({ loading }) => ({
+  loading: loading.effects['login/login'],
+}))(Form.create()(index));
