@@ -21,3 +21,16 @@ export function add(params) {
     body: JSON.stringify(params),
   });
 }
+
+/**
+ * 获取周报列表数据
+ *
+ * @param {页码} page
+ * @param {每页条数} pageSize
+ * @param {用户id} userId
+ */
+export function fetchMyReports({ page, pageSize }) {
+  // 发起请求 https://cjy-react-interface.herokuapp.com/api/users/reports/${page}/${pageSize}/userId
+
+  return request(`/api/users/reports/${page}/${pageSize}/${localStorage.userId}`);
+}

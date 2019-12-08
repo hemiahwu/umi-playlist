@@ -110,7 +110,7 @@ class index extends Component {
                   message: '用户名不能为空',
                 },
               ],
-            })(<Input placeholder="请输入周报标题" />)}
+            })(<Input autocomplete="off" placeholder="请输入周报标题" />)}
           </Form.Item>
           <Form.Item label="接收人">
             {getFieldDecorator('username', {
