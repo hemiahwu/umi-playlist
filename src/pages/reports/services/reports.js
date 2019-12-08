@@ -34,3 +34,11 @@ export function fetchMyReports({ page, pageSize }) {
 
   return request(`/api/users/reports/${page}/${pageSize}/${localStorage.userId}`);
 }
+
+/**
+ * 根据周报id获取详情
+ * @param {周报id} id
+ */
+export async function fetchInfo(id) {
+  return request(`/api/users/report_detail/${localStorage.userId}/${id}`);
+}

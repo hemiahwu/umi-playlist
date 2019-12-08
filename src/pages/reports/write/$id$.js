@@ -8,10 +8,10 @@ import E from 'wangeditor';
 import { connect } from 'dva';
 import router from 'umi/router';
 
-class index extends Component {
+class $id$ extends Component {
   constructor(props) {
     super(props);
-
+    this.id = props.match.params.id;
     this.state = {
       editorContent: null,
       editorCheck: true,
@@ -19,8 +19,27 @@ class index extends Component {
   }
 
   componentDidMount() {
-    this.initEditor();
+    // 请求当前id的数据
+    if (this.id) {
+      this.getDatas().then(() => {
+        const { content } = this.props.info;
+        this.setState({
+          editorContent: content,
+        });
+        this.initEditor();
+      });
+    } else {
+      this.initEditor();
+    }
+
     this.getAllUsers();
+  }
+
+  getDatas() {
+    return this.props.dispatch({
+      type: 'reports/fetchInfo',
+      payload: this.id,
+    });
   }
 
   getAllUsers() {
@@ -35,6 +54,7 @@ class index extends Component {
 
   renderUsers() {
     const { allUsersList } = this.props;
+
     return (
       <Select placeholder="请选择接收人">
         {allUsersList.map(({ username, nickname }, index) => [
@@ -76,8 +96,8 @@ class index extends Component {
           // console.log(value, editorContent);
           this.props
             .dispatch({
-              type: 'reports/add',
-              payload: { ...value, content: editorContent },
+              type: this.id ? 'reports/update' : 'reports/add',
+              payload: { ...value, content: editorContent, id: this.id },
             })
             .then(res => {
               if (res && res.state === 'success') {
@@ -99,6 +119,7 @@ class index extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { editorCheck } = this.state;
+    const { title, receiverName, content } = this.props.info;
     return (
       <Content>
         <Form>
@@ -110,7 +131,8 @@ class index extends Component {
                   message: '用户名不能为空',
                 },
               ],
-            })(<Input autocomplete="off" placeholder="请输入周报标题" />)}
+              initialValue: title,
+            })(<Input autoComplete="off" placeholder="请输入周报标题" />)}
           </Form.Item>
           <Form.Item label="接收人">
             {getFieldDecorator('username', {
@@ -120,12 +142,14 @@ class index extends Component {
                   message: '用户名不能为空',
                 },
               ],
+              initialValue: receiverName,
             })(this.renderUsers())}
           </Form.Item>
           <Form.Item label="内容" required>
             <div
               ref="editorRef"
               style={!editorCheck ? { border: '1px red solid' } : { border: '1px #eee solid' }}
+              dangerouslySetInnerHTML={{ __html: content }}
             />
             {!editorCheck && <p style={{ color: 'red' }}>内容不能为空</p>}
           </Form.Item>
@@ -141,4 +165,4 @@ class index extends Component {
   }
 }
 
-export default connect(({ reports }) => ({ ...reports }))(Form.create()(index));
+export default connect(({ reports }) => ({ ...reports }))(Form.create()($id$));

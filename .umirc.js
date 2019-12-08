@@ -27,6 +27,7 @@ export default {
   proxy: {
     '/api': {
       target: 'https://cjy-react-interface.herokuapp.com/',
+      // target: 'http://localhost:5000/',
       changeOrigin: true,
     },
   },
