@@ -67,6 +67,12 @@ export default {
         });
       }
     },
+    *update({ payload }, { call }) {
+      return yield call(reportsServices.update, payload);
+    },
+    *remove({ payload }, { call }) {
+      return yield call(reportsServices.remove, payload);
+    },
   },
   subscriptions: {
     setup({ dispatch, history }) {

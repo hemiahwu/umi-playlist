@@ -13,7 +13,6 @@ class $id$ extends Component {
     super(props);
 
     this.id = props.match.params.id;
-    console.log(this.id);
 
     this.state = {
       editorContent: null,
@@ -25,11 +24,16 @@ class $id$ extends Component {
     if (this.id) {
       // 编辑
       this.getDatas().then(() => {
-        console.log(this.props.info);
+        const { content } = this.props.info;
+        this.setState({
+          editorContent: content,
+        });
+        this.initEditor();
       });
+    } else {
+      this.initEditor();
     }
 
-    this.initEditor();
     this.getAllUsers();
   }
 
@@ -93,8 +97,8 @@ class $id$ extends Component {
           // console.log(value, editorContent);
           this.props
             .dispatch({
-              type: 'reports/add',
-              payload: { ...value, content: editorContent },
+              type: this.id ? 'reports/update' : 'reports/add',
+              payload: { ...value, content: editorContent, id: this.id },
             })
             .then(res => {
               if (res && res.state === 'success') {
@@ -116,6 +120,7 @@ class $id$ extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { editorCheck } = this.state;
+    const { title, receiverName, content } = this.props.info;
     return (
       <Content>
         <Form>
@@ -127,6 +132,7 @@ class $id$ extends Component {
                   message: '用户名不能为空',
                 },
               ],
+              initialValue: title,
             })(<Input autoComplete="off" placeholder="请输入周报标题" />)}
           </Form.Item>
           <Form.Item label="接收人">
@@ -137,12 +143,14 @@ class $id$ extends Component {
                   message: '用户名不能为空',
                 },
               ],
+              initialValue: receiverName,
             })(this.renderUsers())}
           </Form.Item>
           <Form.Item label="内容" required>
             <div
               ref="editorRef"
               style={!editorCheck ? { border: '1px red solid' } : { border: '1px #eee solid' }}
+              dangerouslySetInnerHTML={{ __html: content }}
             />
             {!editorCheck && <p style={{ color: 'red' }}>内容不能为空</p>}
           </Form.Item>

@@ -44,3 +44,30 @@ export function fetchInfo(id) {
   // 发起请求 https://cjy-react-interface.herokuapp.com/api/users/report_detail/userId/id
   return request(`/api/users/report_detail/${localStorage.userId}/${id}`);
 }
+
+/**
+ * 修改周报
+ * @param {周报id} params.id
+ * @param {周报标题} params.title
+ * @param {周报内容} params.content
+ * @param {接收人} params.receiverName
+ */
+export function update(params) {
+  // 发起请求 https://cjy-react-interface.herokuapp.com/api/users/edit_report/userId/params.id
+  return request(`/api/users/edit_report/${localStorage.userId}/${params.id}`, {
+    method: 'POST',
+    body: JSON.stringify(params),
+  });
+}
+
+/**
+ * 删除周报
+ * @param {周报id} id
+ * @param {写周报的id} userId
+ */
+export function remove(id) {
+  // 发起请求 https://cjy-react-interface.herokuapp.com/api/users/delete_report/userId/id
+  return request(`/api/users/delete_report/${localStorage.userId}/${id}`, {
+    method: 'DELETE',
+  });
+}
