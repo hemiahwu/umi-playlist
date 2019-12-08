@@ -1,8 +1,19 @@
 import React from 'react';
-import { Row, Col, Card } from 'antd';
+import { Row, Col, Card, Pagination } from 'antd';
 import { connect } from 'dva';
 
-const List = ({ list }) => {
+const List = ({ list, page, pageSize, total, dispatch }) => {
+  const handleChangePage = current => {
+    if (current !== page) getDatas(current);
+  };
+
+  const getDatas = page => {
+    dispatch({
+      type: 'reports/fetch',
+      payload: { page },
+    });
+  };
+
   const colSpan = { xl: 6, xxl: 4, span: 6 };
   return (
     <div>
@@ -16,6 +27,17 @@ const List = ({ list }) => {
           </Col>
         ))}
       </Row>
+      {list.length ? (
+        <Pagination
+          className="global-pagination"
+          current={page}
+          pageSize={pageSize}
+          total={total}
+          onChange={handleChangePage}
+        />
+      ) : (
+        ''
+      )}
     </div>
   );
 };
