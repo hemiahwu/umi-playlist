@@ -8,6 +8,9 @@ export default {
     total: 0,
     page: 1,
     pageSize: 10,
+    info: {
+      content: '<p><br></p>',
+    },
   },
   reducers: {
     setData(state, { payload }) {
@@ -15,6 +18,9 @@ export default {
     },
     setReports(state, { payload: { list, total, page } }) {
       return { ...state, list, total, page };
+    },
+    setInfo(state, { payload }) {
+      return { ...state, info: payload };
     },
   },
   effects: {
@@ -43,6 +49,21 @@ export default {
         yield put({
           type: 'setReports',
           payload: { list: { list: [], total: 0, page: 1 } },
+        });
+      }
+    },
+    *fetchInfo({ payload }, { call, put }) {
+      const res = yield call(reportsServices.fetchInfo, payload);
+      console.log(res);
+      if (res && res.state === 'success') {
+        yield put({
+          type: 'setInfo',
+          payload: res.data,
+        });
+      } else {
+        yield put({
+          type: 'setInfo',
+          payload: {},
         });
       }
     },

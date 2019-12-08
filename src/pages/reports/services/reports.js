@@ -34,3 +34,13 @@ export function fetchMyReports({ page, pageSize }) {
 
   return request(`/api/users/reports/${page}/${pageSize}/${localStorage.userId}`);
 }
+
+/**
+ * 根据周报id获取要编辑周报
+ * @param {周报id} id
+ * @param {写周报的用户id} userId
+ */
+export function fetchInfo(id) {
+  // 发起请求 https://cjy-react-interface.herokuapp.com/api/users/report_detail/userId/id
+  return request(`/api/users/report_detail/${localStorage.userId}/${id}`);
+}

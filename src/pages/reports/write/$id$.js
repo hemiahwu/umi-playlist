@@ -8,9 +8,12 @@ import E from 'wangeditor';
 import { connect } from 'dva';
 import router from 'umi/router';
 
-class index extends Component {
+class $id$ extends Component {
   constructor(props) {
     super(props);
+
+    this.id = props.match.params.id;
+    console.log(this.id);
 
     this.state = {
       editorContent: null,
@@ -19,8 +22,22 @@ class index extends Component {
   }
 
   componentDidMount() {
+    if (this.id) {
+      // 编辑
+      this.getDatas().then(() => {
+        console.log(this.props.info);
+      });
+    }
+
     this.initEditor();
     this.getAllUsers();
+  }
+
+  getDatas() {
+    return this.props.dispatch({
+      type: 'reports/fetchInfo',
+      payload: this.id,
+    });
   }
 
   getAllUsers() {
@@ -110,7 +127,7 @@ class index extends Component {
                   message: '用户名不能为空',
                 },
               ],
-            })(<Input autocomplete="off" placeholder="请输入周报标题" />)}
+            })(<Input autoComplete="off" placeholder="请输入周报标题" />)}
           </Form.Item>
           <Form.Item label="接收人">
             {getFieldDecorator('username', {
@@ -141,4 +158,4 @@ class index extends Component {
   }
 }
 
-export default connect(({ reports }) => ({ ...reports }))(Form.create()(index));
+export default connect(({ reports }) => ({ ...reports }))(Form.create()($id$));
